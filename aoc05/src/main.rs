@@ -31,7 +31,7 @@ fn remove_react(polymer: &mut Vec<u8>) -> &mut Vec<u8> {
     fn remove<'a, 'b>(polymer: &'a mut Vec<u8>, remains: &'b mut Vec<u8>) -> &'a mut Vec<u8> {
         let mut reacted = false;
         let mut i = 0;
-        while !polymer.is_empty() && i < polymer.len() - 1 {
+        while i + 1 < polymer.len() {
             if react(polymer[i], polymer[i + 1]) {
                 reacted = true;
                 i += 2;

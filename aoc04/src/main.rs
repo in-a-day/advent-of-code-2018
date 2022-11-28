@@ -79,22 +79,21 @@ fn sum_and_minutes(records: &Vec<Record>) -> (usize, [usize; 60]) {
     let mut minutes = [0; 60];
     for record in records {
         match record {
-            Record::Shift(_, _) => (),
             Record::Asleep(_) => {
                 last_status = Some(record);
             }
             Record::Wakeup(end) => {
                 let rc = last_status.expect("unexcepted status");
-                match rc {
-                    Record::Asleep(dt) => {
-                        sum += end.minute as usize - dt.minute as usize;
-                        for minute in dt.minute..end.minute {
-                            minutes[minute as usize] += 1;
-                        }
+                if let Record::Asleep(dt) = rc {
+                    sum += end.minute as usize - dt.minute as usize;
+                    for minute in dt.minute..end.minute {
+                        minutes[minute as usize] += 1;
                     }
-                    _ => panic!("unexcepted status"),
+                } else {
+                    panic!("unexcepted status")
                 }
             }
+            _ => (),
         }
     }
 
